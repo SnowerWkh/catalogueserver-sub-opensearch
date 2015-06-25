@@ -1,2 +1,2 @@
-# catalogueserver-sub-opensearch
-impletement opensearch and sub of pubsubhubbub
+# catalogueserver-sub-opensearch by wkh
+impletement opensearch and sub of pubsubhubbub 
