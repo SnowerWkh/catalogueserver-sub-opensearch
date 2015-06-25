@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="geonoon.catalogueserver.dao.GeochannelservicedataDao">
+
+	<resultMap id="GeochannelmetadataMap"  type="Geochannelmetadata"> 
+		<id property="geowwUri" column="geowwURI" /> 
+		<result property="title" column="title"/> 
+		<result property="alternativeTitle" column="alternativeTitle"/> 
+		<result property="serviceLanguage" column="serviceLanguage"/> 
+		<result property="abstract_" column="Abstract"/> 
+		<result property="topicCategory" column="topicCategory"/> 
+		<result property="geoChannelIdentifier" column="geoChannelIdentifier"/> 
+		<result property="keyword" column="keyword"/> 
+		<result property="resourceIdentifiers" column="resourceIdentifiers"/> <!--schema without definite  --> 
+		<result property="resourceType" column="resourceType"/> 
+		<result property="spatialFeature" column="astext(spatialFeature)"/> 
+		<result property="spatialMetrics" column="spatialMetrics"/> 
+		<result property="boundingBox" column="astext(boundingBox)"/> 
+		<result property="spatialExtent" column="astext(spatialExtent)"/> 
+		<result property="verticalExtentLow" column="verticalExtentLow"/> 
+		<result property="verticalExtentHigh" column="verticalExtentHigh"/> 
+		<result property="spatialReferenceSystem" column="spatialReferenceSystem"/> 
+		<result property="spatialResolution" column="spatialResolution"/> 
+		<result property="temporalExtentStart" column="temporalExtentStart"/> 
+		<result property="temporalExtentEnd" column="temporalExtentEnd"/>
+		<result property="publicationDate" column="publicationDate"/> 
+		<result property="dataFormat" column="dataFormat"/> 
+		<result property="responsibleOrganisation" column="responsibleOrganisation"/> 
+		<result property="frequencyOfUpdata" column="frequencyOfUpdate"/> 
+		<result property="limitationOnPublicAccess" column="limitationOnPublicAccess"/> 
+		<result property="useConstraints" column="useConstraints"/> 
+		<result property="coupledGeoChannels" column="coupledGeoChannels"/> 
+		<result property="additionalInformation" column="additionalInformation"/> 
+		<result property="metadataDateTime" column="metadataDateTime"/> 
+		<result property="metadataLanguage" column="metadataLanguage"/> 
+		<result property="metadataContact" column="metadataContact"/> 
+	</resultMap>
+	<select id="findByGeoUrlFromGeochannelmetadata" parameterType="Geochannelmetadata" resultMap="GeochannelmetadataMap">
+		select * from geochannelmetadata where geowwURI =#{geowwUri}
+	</select>
+	
+	<select id="findByOpensearchParameter" parameterType="Geochannelmetadata" resultMap="GeochannelmetadataMap">
+		select 
+		title,alternativeTitle,serviceLanguage,abstract,topicCategory,
+		geoChannelIdentifier,resourceIdentifiers,keyword,resourceType,
+		astext(spatialFeature),spatialMetrics,astext(boundingBox),
+		astext(spatialExtent),verticalExtentLow,verticalExtentHigh,spatialReferenceSystem,<!-- geomfromtext需要解决 -->
+		spatialResolution,temporalExtentStart,temporalExtentEnd,publicationDate,geowwUri,dataFormat,
+		responsibleOrganisation,frequencyOfUpdata,limitationOnPublicAccess,
+		useConstraints,coupledGeoChannels,additionalInformation,
+		metadataDateTime,metadataLanguage,metadataContact
+		 from geochannelmetadata
+	 <where>
+		<if test="title!=null and title!=''">
+		and title like CONCAT('%',#{title},'%')
+		</if>
+		<if test="alternativeTitle!=null and alternativeTitle!=''">
+		and alternativeTitle like CONCAT('%',#{alternativeTitle},'%')
+		</if>
+		<if test="serviceLanguage!=null and serviceLanguage!=''">
+		and serviceLanguage like CONCAT('%',#{serviceLanguage},'%')
+		</if>
+		<if test="abstract_!=null and abstract_!=''">
+		and abstract like CONCAT('%',#{abstract_},'%')
+		</if>
+		<if test="topicCategory!=null and topicCategory!=''">
+		and topicCategory like CONCAT('%',#{topicCategory},'%')
+		</if>
+		<if test="geoChannelIdentifier!=null and geoChannelIdentifier!=''">
+			and geoChannelIdentifier like CONCAT('%',#{geoChannelIdentifier},'%')
+		</if>
+		<if test="keyword!=null and keyword!=''">
+		and keyword like CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="resourceIdentifiers!=null and resourceIdentifiers!=''">
+		and resourceIdentifiers like CONCAT('%',#{resourceIdentifiers},'%')
+		</if>
+		<if test="resourceType!=null and resourceType!=''">
+		and resourceType like CONCAT('%',#{resourceType},'%')
+		</if>
+		<if test="spatialReferenceSystem!=null and spatialReferenceSystem!=''">
+		and spatialReferenceSystem like CONCAT('%',#{spatialReferenceSystem},'%')
+		</if>		
+		<!-- <if test="publicationDate!=null"></if> -->
+		<if test="dataFormat!=null and dataFormat!=''">
+		and dataFormat like CONCAT('%',#{dataFormat},'%')
+		</if>
+		<if test="responsibleOrganisation!=null and responsibleOrganisation!=''">
+		and responsibleOrganisation like CONCAT('%',#{responsibleOrganisation},'%')
+		</if>
+		<if test="frequencyOfUpdata!=null and frequencyOfUpdata!=''">
+		and frequencyOfUpdata like CONCAT('%',#{frequencyOfUpdata},'%')
+		</if>
+		<if test="limitationOnPublicAccess!=null and limitationOnPublicAccess!=''">
+		and limitationOnPublicAccess like CONCAT('%',#{limitationOnPublicAccess},'%')
+		</if>
+		<!-- <if test="useConstraints!=null"></if> -->
+		<if test="coupledGeoChannels!=null and coupledGeoChannels!=''">
+		and coupledGeoChannels like CONCAT('%',#{coupledGeoChannels},'%')
+		</if>
+		<if test="additionalInformation!=null and additionalInformation!=''">
+		and additionalInformation like CONCAT('%',#{additionalInformation},'%')
+		</if>
+		<!-- <if test="metadataDateTime!=null"></if> -->
+		<if test="metadataLanguage!=null and metadataLanguage!=''">
+		and metadataLanguage like CONCAT('%',#{metadataLanguage},'%')
+		</if>
+		<if test="metadataContact!=null and metadataContact!=''">
+		and metadataContact like CONCAT('%',#{metadataContact},'%')
+		</if>
+		
+			
+		<if test="verticalExtentLow!=null and verticalExtentHigh!=null">
+		 and verticalExtentLow &lt;= #{verticalExtentLow}  and verticalExtentHigh  &gt;=#{verticalExtentHigh}
+		</if>
+		<if test="temporalExtentStart!=null and temporalExtentEnd!=null">
+		<!-- and temporalExtentStart &lt;= #{temporalExtentStart}  and temporalExtentEnd  &gt;=#{temporalExtentEnd} --> 
+		 <![CDATA[ and temporalExtentStart <= #{temporalExtentStart}  and temporalExtentEnd >= #{temporalExtentEnd} ]]>
+		</if>
+		<!-- 下面这两个参数定义的很不准确 ，需要好好商量 -->
+		<!-- <if test="spatialMetrics!=null">
+		 and spatialMetrics &lt;= #{spatialMetrics} 
+		</if>
+		<if test="spatialResolution!=null">
+		 and spatialResolution &lt;= #{spatialResolution} 
+		</if> -->
+		
+		
+		<if test="spatialFeature!=null">
+		<!--  Crosses()--> 
+		and Crosses(geomfromtext(#{spatialFeature}),spatialFeature)
+		</if>
+		<if test="boundingBox!=null">
+		and ST_Overlaps(geomfromtext(#{boundingBox}),boundingBox)
+		</if>
+		<if test="spatialExtent!=null">
+		and ST_Overlaps(geomfromtext(#{spatialExtent}),spatialExtent)
+		</if>
+		
+		
+		<!-- searchTerms 用与其他结果or的形式进行搜索，相互直接也是or的-->
+		<if test="searchTerms!=null and searchTerms!=''">
+		or title like CONCAT('%',#{searchTerms},'%')
+		or alternativeTitle like CONCAT('%',#{searchTerms},'%')
+		or serviceLanguage like CONCAT('%',#{searchTerms},'%')
+		or abstract like CONCAT('%',#{searchTerms},'%')
+		or topicCategory like CONCAT('%',#{searchTerms},'%')
+		or geoChannelIdentifier like CONCAT('%',#{searchTerms},'%')
+		or keyword like CONCAT('%',#{searchTerms},'%')
+		or resourceIdentifiers like CONCAT('%',#{searchTerms},'%')
+		or resourceType like CONCAT('%',#{searchTerms},'%')
+		or spatialReferenceSystem like CONCAT('%',#{searchTerms},'%')
+		or dataFormat like CONCAT('%',#{searchTerms},'%')
+		or responsibleOrganisation like CONCAT('%',#{searchTerms},'%')
+		or frequencyOfUpdata like CONCAT('%',#{searchTerms},'%')
+		or limitationOnPublicAccess like CONCAT('%',#{searchTerms},'%')
+		or coupledGeoChannels like CONCAT('%',#{searchTerms},'%')
+		or additionalInformation like CONCAT('%',#{searchTerms},'%')
+		or metadataLanguage like CONCAT('%',#{searchTerms},'%')
+		or metadataContact like CONCAT('%',#{searchTerms},'%')
+		</if>
+	
+	</where>
+	</select>
+	
+	<insert id="insertGeoChannelMeta" parameterType="Geochannelmetadata" statementType="PREPARED"
+		keyProperty="geowwUri" useGeneratedKeys="false">
+		insert into geochannelmetadata values
+		(#{title},#{alternativeTitle},#{serviceLanguage},#{abstract_},#{topicCategory},
+		#{geoChannelIdentifier},#{resourceIdentifiers},#{keyword},#{resourceType},
+		geomfromtext(#{spatialFeature}),#{spatialMetrics},geomfromtext(#{boundingBox}),
+		geomfromtext(#{spatialExtent}),#{verticalExtentLow},#{verticalExtentHigh},#{spatialReferenceSystem},
+		#{spatialResolution},#{temporalExtentStart},#{temporalExtentEnd},#{publicationDate},#{geowwUri},#{dataFormat},
+		#{responsibleOrganisation},#{frequencyOfUpdata},#{limitationOnPublicAccess},
+		#{useConstraints},#{coupledGeoChannels},#{additionalInformation},
+		#{metadataDateTime},#{metadataLanguage},#{metadataContact})
+	</insert>
+	<update id="updateGeoChannelMeta" parameterType="Geochannelmetadata">
+		UPDATE geochannelmetadata SET
+		title=#{title},
+		alternativeTitle=#{alternativeTitle},
+		serviceLanguage=#{serviceLanguage},
+		Abstract=#{abstract_},
+		topicCategory=#{topicCategory},
+		geoChannelIdentifier=#{geoChannelIdentifier},
+		resourceIdentifiers=#{resourceIdentifiers},
+		keyword=#{keyword},
+		resourceType=#{resourceType},
+		spatialFeature=geomfromtext(#{spatialFeature}),
+		spatialMetrics=#{spatialMetrics},
+		boundingBox=geomfromtext(#{boundingBox}),
+		spatialExtent=geomfromtext(#{spatialExtent}),
+		verticalExtentLow=#{verticalExtentLow},
+		verticalExtentHigh=#{verticalExtentHigh},
+		spatialReferenceSystem=#{spatialReferenceSystem},
+		spatialResolution=#{spatialResolution},
+		temporalExtentStart=#{temporalExtentStart},
+		temporalExtentEnd=#{temporalExtentEnd},
+		publicationDate=#{publicationDate},
+		dataFormat=#{dataFormat},
+		responsibleOrganisation=#{responsibleOrganisation},
+		frequencyOfUpdata=#{frequencyOfUpdata},
+		limitationOnPublicAccess=#{limitationOnPublicAccess},
+		useConstraints=#{useConstraints},
+		coupledGeoChannels=#{coupledGeoChannels},
+		additionalInformation=#{additionalInformation},
+		metadataDateTime=#{metadataDateTime},
+		metadataLanguage=#{metadataLanguage},
+		metadataContact=#{metadataContact} 
+		WHERE geowwURI = #{geowwUri}
+	</update>
+	
+</mapper>
